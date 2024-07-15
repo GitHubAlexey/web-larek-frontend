@@ -222,7 +222,6 @@ type TFormErrors = Partial<Record<keyof IOrder, string>>;
 - `protected events: IEvents` - экземпляр класса `EventEmitter` для инициации событий при изменении данных
 
 Методы класса:
-- `setOrderField(orderData: IOrder): void` - установка значений полей ввода адреса и контактов, валидация полей ввода адреса, контактов
 - `validateContacts(): boolean` - проверка правильности ввода email и телефона
 - `validatePaymentAddress(): boolean` - проверка правильности выбора способа доставки и ввода адреса доставки
 - `clearOrder(): void` - очистка данных заказа
@@ -237,7 +236,6 @@ type TFormErrors = Partial<Record<keyof IOrder, string>>;
 Методы класса:
 - `addToBasket(product: IProduct): void` - добавление товара в корзину
 - `deleteFromBasket(product: IProduct): void` - удаление товара из корзины
-- `getTotalPrice(): number` - получение общей суммы заказа
 - `clearBasket(): void` - очищение корзины после успешного заказа
 - `get products()` - геттер для получения списка товаров в корзине
 

@@ -68,7 +68,7 @@ export type TTotalPrice = Pick<IBasket, 'total'>;
 // Тип для модального окна с данными по заказу (способ оплаты и адрес доставки)
 export type TOrderModal = Pick<IOrder, 'payment' | 'address'>;
 
-// Тип для модального окна контактов покупателя (+++)
+// Тип для модального окна контактов покупателя
 export type TContactsModal = Pick<IOrder, 'email' | 'phone'>;
 
 // Тип для ошибок валидации

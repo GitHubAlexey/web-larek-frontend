@@ -6,6 +6,6 @@ export class ProductData extends Model<IProductList> {
 
 	setCatalog(cards: IProduct[]) {
 		this.items = cards;
-		this.emitChanges('cards:changed', { items: this.items });
+		this.emitChanges('cards:changed', this.items );
 	}
 }

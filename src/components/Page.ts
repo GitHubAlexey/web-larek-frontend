@@ -23,7 +23,7 @@ export class Page extends Component<IPage> {
 	}
 
 	set counter(value: number) {
-		this.setText(this._counter, `${value}`);
+		this.setText(this._counter, String(value));
 	}
 
 	set catalog(items: HTMLElement[]) {

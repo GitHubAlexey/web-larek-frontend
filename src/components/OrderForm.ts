@@ -11,10 +11,7 @@ export class OrderForm extends Form<TOrderModal> {
 	constructor(container: HTMLFormElement, events: IEvents) {
 		super(container, events);
 
-		this._address = ensureElement<HTMLInputElement>(
-			'.form__input[name=address]',
-			container
-		);
+		this._address = ensureElement<HTMLInputElement>('.form__input[name=address]', container);
 		this._address.addEventListener('click', () => {
 			this.onInputChange('address', this._address.value)
 		})
@@ -22,13 +19,13 @@ export class OrderForm extends Form<TOrderModal> {
 		this._card = ensureElement<HTMLButtonElement>('.button_alt[name=card]', container);
 		this._card.addEventListener('click', () => {
 			this.payment = 'Online';
-			this.onInputChange('payment', 'Online');
+			this.onInputChange('payment', this.payment);
 		});
 
 		this._cash = ensureElement<HTMLButtonElement>('.button_alt[name=cash]', container);
 		this._cash.addEventListener('click', () => {
 			this.payment = 'Cash';
-			this.onInputChange('payment', 'Cash');
+			this.onInputChange('payment', this.payment);
 		});
 	}
 

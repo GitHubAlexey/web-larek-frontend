@@ -35,10 +35,10 @@ const order = new OrderData({}, events);
 
 const page = new Page(document.body, events);
 const modal = new Modal(modalContainerTemplate, events);
-const basket = new Basket('basket', cloneTemplate(basketTemplate), events);
+const basket = new Basket(cloneTemplate(basketTemplate), events);
 const orderForm = new OrderForm(cloneTemplate(orderTemplate), events);
 const contactsForm = new ContactsForm(cloneTemplate(contactsTemplate), events);
-const success = new Success('order-success', cloneTemplate(successTemplate), {
+const success = new Success(cloneTemplate(successTemplate), {
 	onClick: () => events.emit('success:close'),
 });
 
@@ -55,7 +55,7 @@ api
 // Вывод каталога товаров на главной странице
 events.on('cards:changed', () => {
 	page.catalog = catalog.items.map((item) => {
-		const catalogItem = new Card('card', cloneTemplate(cardCatalogTemplate), {
+		const catalogItem = new Card(cloneTemplate(cardCatalogTemplate), {
 			onClick: () => events.emit('cardPreview:open', item),
 		});
 		return catalogItem.render(item);
@@ -64,7 +64,7 @@ events.on('cards:changed', () => {
 
 // Открываем превью карточки, на которую нажали
 events.on('cardPreview:open', (item: IProduct) => {
-	const cardPreview = new Card('card', cloneTemplate(cardPreviewTemplate), {
+	const cardPreview = new Card(cloneTemplate(cardPreviewTemplate), {
 		onClick: () => {
 			events.emit('product:toBasket', item);
 			cardPreview.toogleButtonText(item);
@@ -79,24 +79,28 @@ events.on('cardPreview:open', (item: IProduct) => {
 
 // Добавить в корзину / удалить из корзины из превью товара
 events.on('product:toBasket', (item: IProduct) => {
-	basketModel.products.some((product) => product.id === item.id)
-		? basketModel.deleteFromBasket(item)
-		: basketModel.addToBasket(item);
+	const products = basketModel.products.filter((product) => product.id === item.id);
+	if (products.length > 0) {
+			basketModel.deleteFromBasket(item);
+	} else {
+			basketModel.addToBasket(item);
+	}
 	page.counter = basketModel.products.length;
 	getBasketItemsView();
 });
 
 // Отображение списка товаров, добавленных в корзину
 function getBasketItemsView() {
-	basket.items = basketModel.products.map((item, index) => {
-		const basketItem = new Card('card', cloneTemplate(cardBasketTemplate), {
+	basket.items = basketModel.products.reduce((acc, item, index) => {
+		const basketItem = new Card(cloneTemplate(cardBasketTemplate), {
 			onClick: () => {
 				events.emit('basket:delete', item);
 			},
 		});
 		basketItem.basketItemIndex = index + 1;
-		return basketItem.render(item);
-	});
+		acc.push(basketItem.render(item));
+		return acc;
+	}, []);
 }
 
 // Открыть корзину

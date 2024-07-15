@@ -6,11 +6,11 @@ export class Success extends Component<TTotalPrice> {
 	protected _button: HTMLButtonElement;
 	protected _description: HTMLElement;
 
-	constructor(blockName: string, container: HTMLElement, actions: ISuccessActions) {
+	constructor(container: HTMLElement, actions: ISuccessActions) {
 		super(container);
 
-		this._button = ensureElement<HTMLButtonElement>(`.${blockName}__close`, container);
-		this._description = ensureElement<HTMLElement>(`.${blockName}__description`, container);
+		this._button = ensureElement<HTMLButtonElement>(`.order-success__close`, container);
+		this._description = ensureElement<HTMLElement>(`.order-success__description`, container);
 
 		if (actions?.onClick) {
 			this._button.addEventListener('click', actions.onClick);
@@ -18,9 +18,6 @@ export class Success extends Component<TTotalPrice> {
 	}
 
 	set total(value: number) {
-		this.setText(
-			this._description,
-			'Списано ' + value + ' синапсов'
-		);
+		this.setText(this._description, 'Списано ' + value + ' синапсов');
 	}
 }
