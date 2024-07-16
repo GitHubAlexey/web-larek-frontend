@@ -1,4 +1,4 @@
-import { TOrderModal/* , TPayment */ } from "../types";
+import { TOrderModal } from "../types";
 import { ensureElement } from "../utils/utils";
 import { Form } from "./Form";
 import { IEvents } from "./base/events";

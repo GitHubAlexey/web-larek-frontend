@@ -1,5 +1,4 @@
 import { IProduct } from "../types";
-import { IEvents } from "./base/events";
 import { Model } from "./base/Model";
 
 export class BasketData extends Model<IProduct> {

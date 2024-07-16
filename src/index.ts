@@ -67,24 +67,17 @@ events.on('cardPreview:open', (item: IProduct) => {
 	const cardPreview = new Card(cloneTemplate(cardPreviewTemplate), {
 		onClick: () => {
 			events.emit('product:toBasket', item);
-			cardPreview.toogleButtonText(item);
 		},
 	}
 	);
-	cardPreview.toogleButtonText(item);
 	modal.render({
 		content: cardPreview.render(item),
 	});
 });
 
-// Добавить в корзину / удалить из корзины из превью товара
+// Добавить товар в корзину (в т.ч. одинаковый товар несколько раз и товар с нулевой стоимостью)
 events.on('product:toBasket', (item: IProduct) => {
-	const products = basketModel.products.filter((product) => product.id === item.id);
-	if (products.length > 0) {
-			basketModel.deleteFromBasket(item);
-	} else {
-			basketModel.addToBasket(item);
-	}
+	basketModel.addToBasket(item);
 	page.counter = basketModel.products.length;
 	getBasketItemsView();
 });
@@ -192,14 +185,22 @@ events.on('contactsFormErrors:change', (errors: Partial<TContactsModal>) => {
 		.join('; ');
 });
 
-// отправить на сервер данные и показать окно успешной покупки
+// отправить на сервер данные (без товара с нулевой стоимостью) и показать окно успешной покупки
 events.on('contacts:submit', () => {
+	// Фильтруем товары перед отправкой, убираем товары с нулевой стоимостью
+	const finalOrder = {
+		...order, items: order.items.filter(item => {
+			const product = basketModel.products.find(product => product.id === item);
+			return product && product.price !== null;
+		})
+	};
+
 	api
-		.post('/order', order)
+		.post('/order', finalOrder)
 		.then((res) => {
 			modal.render({
 				content: success.render({
-					total: order.total,
+					total: finalOrder.total,
 				}),
 			});
 			order.clearOrder();
