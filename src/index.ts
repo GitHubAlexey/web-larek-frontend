@@ -2,7 +2,7 @@ import './scss/styles.scss';
 import { ProductData } from './components/ProductData';
 import { Api } from './components/base/api';
 import { EventEmitter } from './components/base/events';
-import { IProduct, TApiResponse, TContactsModal, TOrderModal } from './types';
+import { IProduct, TApiResponse, TContactsModal, TOrderModal, TPayment } from './types';
 import { API_URL } from './utils/constants';
 import { BasketData } from './components/BasketData';
 import { OrderData } from './components/OrderData';
@@ -129,7 +129,7 @@ events.on('basket:submit', () => {
 		content: orderForm.render({
 			valid: false,
 			errors: [],
-			payment: 'Online',
+			payment: undefined,
 			address: '',
 		}),
 	});
@@ -156,23 +156,21 @@ events.on('orderFormErrors:change', (errors: Partial<TOrderModal>) => {
 		.join('; ');
 });
 
+// Изменился способ оплаты
+events.on('payment:change', (data: { field: keyof TOrderModal; value: TPayment }) => {
+	order.payment = data.value;
+	order.validatePaymentAddress();
+});
+
 // Изменилось поле формы ввода адреса доставки
 events.on('address:change', (data: { field: keyof TOrderModal; value: string }) => {
 	order.address = data.value;
 	order.validatePaymentAddress();
-}
-);
+});
 
-// Изменилось поле формы ввода почты
-events.on('email:change', (data: { field: keyof TContactsModal; value: string }) => {
-	order.email = data.value;
-	order.validateContacts();
-}
-);
-
-// Изменилось поле формы ввода телефона
-events.on('phone:change', (data: { field: keyof TContactsModal; value: string }) => {
-	order.phone = data.value;
+// Изменилось поле формы ввода контактов (email и телефон)
+events.on('contacts:change', (data: { field: keyof TContactsModal; value: string }) => {
+	order[data.field] = data.value;
 	order.validateContacts();
 });
 

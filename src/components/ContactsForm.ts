@@ -21,6 +21,10 @@ export class ContactsForm extends Form<TContactsModal> {
 		});
 	}
 
+	protected onInputChange(field: keyof TContactsModal, value: string): void {
+		this.events.emit('contacts:change', { field, value });
+	}
+
 	set email(value: string) {
 		(this.container.elements.namedItem('email') as HTMLInputElement).value = value;
 	}

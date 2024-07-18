@@ -1,15 +1,14 @@
-import { IOrder, TFormErrors } from "../types";
+import { IOrder, TFormErrors, TPayment } from "../types";
 import { Model } from "./base/Model";
 import { IEvents } from "./base/events";
 
 export class OrderData extends Model<IOrder> {
 	items: string[] = [];
-	payment: string = 'Online';
+	payment: TPayment = undefined;
 	address: string = '';
 	email: string = '';
 	phone: string = '';
 	formErrors: TFormErrors = {};
-	valid: boolean = false;
 	total: number | null = null;
 	protected events: IEvents;
 
@@ -31,7 +30,7 @@ export class OrderData extends Model<IOrder> {
 	validatePaymentAddress(): boolean {
     const errors: typeof this.formErrors = {};
 		if (!this.payment) {
-			errors.address = 'Необходимо выбрать способ оплаты';
+			errors.payment = 'Необходимо выбрать способ оплаты';
 	}
     if (!this.address) {
         errors.address = 'Необходимо указать адрес доставки';
@@ -44,12 +43,11 @@ export class OrderData extends Model<IOrder> {
 	// Очистка данных заказа
 	clearOrder(): void {
 		this.items = [];
-    this.payment = 'Online';
+    this.payment = undefined;
     this.email = '';
     this.phone = '';
     this.address = '';
 		this.formErrors = {};
-		this.valid = false;
 		this.total = null;
   }
 }

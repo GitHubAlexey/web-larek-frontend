@@ -11,7 +11,7 @@ export interface IProduct {
 
 // Данные для заказа
 export interface IOrder {
-	payment: string;
+	payment: TPayment;
 	address: string;
 	email: string;
 	phone: string;
@@ -73,3 +73,6 @@ export type TContactsModal = Pick<IOrder, 'email' | 'phone'>;
 
 // Тип для ошибок валидации
 export type TFormErrors = Partial<Record<keyof IOrder, string>>;
+
+// Тип для способа оплаты
+export type TPayment = 'Online' | 'Cash';

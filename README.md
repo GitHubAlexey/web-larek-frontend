@@ -166,6 +166,12 @@ type TContactsModal = Pick<IOrder, 'email' | 'phone'>;
 type TFormErrors = Partial<Record<keyof IOrder, string>>;
 ```
 
+Тип для способа оплаты
+
+```
+type TPayment = 'Online' | 'Cash';
+```
+
 ## Архитектура приложения
 
 Код приложения разделен на слои согласно парадигме MVP: 
@@ -363,6 +369,7 @@ type TFormErrors = Partial<Record<keyof IOrder, string>>;
 - `protected _phone: HTMLInputElement` - элемент для ввода номера телефона
 
 Методы класса:
+- `protected onInputChange(field: keyof TContactsModal, value: string): void` - переопределяем метод onInputChange
 - `set email(value: string)` - сеттер, устанавливает значение почты
 - `set phone(value: string)` - сеттер, устанавливает значение номера телефона
 
@@ -408,6 +415,6 @@ type TFormErrors = Partial<Record<keyof IOrder, string>>;
 - `success:close` - событие, генерируемое при нажатии кнопки в модальном окне успешного завершения оформления заказа
 - `orderFormErrors:change` - событие, сообщающее об изменении валидации формы заказа
 - `contactsFormErrors:change` - событие, сообщающее об изменении валидации формы контактов
+- `payment:change` - событие, сообщающее об изменении способа оплаты
 - `address:change` - событие, сообщающее об изменении в поле адреса
-- `email:change` - событие, сообщающее об изменении в поле email
-- `phone:change` - событие, сообщающее об изменении в поле номера телефона
+- `contacts:change` - событие, сообщающее об изменении в форме контактов
